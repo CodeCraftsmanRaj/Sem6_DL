@@ -1,7 +1,5 @@
 """
 Visualization and plotting module for CNN training results
-Author: Raj Kalpesh Mathuria
-UID: 2023300139
 """
 
 import numpy as np
@@ -13,22 +11,14 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 
-# Set plotting style
 plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette("husl")
 
 
 def plot_training_history(history, save=True):
-    """
-    Plot training and validation accuracy and loss curves
-    
-    Args:
-        history: Keras History object
-        save: Whether to save the plot
-    """
+    """Plot training and validation accuracy and loss curves"""
     fig, axes = plt.subplots(1, 2, figsize=(15, 5))
     
-    # Plot accuracy
     axes[0].plot(history.history['accuracy'], label='Training Accuracy', linewidth=2)
     axes[0].plot(history.history['val_accuracy'], label='Validation Accuracy', linewidth=2)
     axes[0].set_title('Model Accuracy', fontsize=14, fontweight='bold')
@@ -37,7 +27,6 @@ def plot_training_history(history, save=True):
     axes[0].legend(loc='lower right', fontsize=10)
     axes[0].grid(True, alpha=0.3)
     
-    # Plot loss
     axes[1].plot(history.history['loss'], label='Training Loss', linewidth=2)
     axes[1].plot(history.history['val_loss'], label='Validation Loss', linewidth=2)
     axes[1].set_title('Model Loss', fontsize=14, fontweight='bold')
@@ -58,16 +47,7 @@ def plot_training_history(history, save=True):
 
 
 def plot_sample_images(x_data, y_data, num_samples=25, predictions=None, save=True):
-    """
-    Plot sample images from the dataset
-    
-    Args:
-        x_data: Image data
-        y_data: Labels
-        num_samples: Number of samples to plot
-        predictions: Optional predicted labels
-        save: Whether to save the plot
-    """
+    """Plot sample images from the dataset"""
     num_samples = min(num_samples, len(x_data))
     grid_size = int(np.ceil(np.sqrt(num_samples)))
     
@@ -91,7 +71,6 @@ def plot_sample_images(x_data, y_data, num_samples=25, predictions=None, save=Tr
         
         axes[i].axis('off')
     
-    # Hide unused subplots
     for i in range(num_samples, len(axes)):
         axes[i].axis('off')
     
@@ -108,14 +87,7 @@ def plot_sample_images(x_data, y_data, num_samples=25, predictions=None, save=Tr
 
 
 def plot_confusion_matrix(y_true, y_pred, save=True):
-    """
-    Plot confusion matrix
-    
-    Args:
-        y_true: True labels
-        y_pred: Predicted labels
-        save: Whether to save the plot
-    """
+    """Plot confusion matrix"""
     cm = confusion_matrix(y_true, y_pred)
     
     plt.figure(figsize=(12, 10))
@@ -140,13 +112,7 @@ def plot_confusion_matrix(y_true, y_pred, save=True):
 
 
 def plot_class_wise_accuracy(class_accuracy, save=True):
-    """
-    Plot bar chart of class-wise accuracy
-    
-    Args:
-        class_accuracy: Dictionary of class-wise accuracy
-        save: Whether to save the plot
-    """
+    """Plot bar chart of class-wise accuracy"""
     classes = list(class_accuracy.keys())
     accuracies = [acc * 100 for acc in class_accuracy.values()]
     
@@ -160,7 +126,6 @@ def plot_class_wise_accuracy(class_accuracy, save=True):
     plt.ylim(0, 105)
     plt.grid(True, alpha=0.3, axis='y')
     
-    # Add value labels on bars
     for bar in bars:
         height = bar.get_height()
         plt.text(bar.get_x() + bar.get_width()/2., height,
@@ -179,17 +144,7 @@ def plot_class_wise_accuracy(class_accuracy, save=True):
 
 
 def plot_misclassified_samples(x_test, y_test, predictions, num_samples=16, save=True):
-    """
-    Plot misclassified samples
-    
-    Args:
-        x_test: Test images
-        y_test: True labels
-        predictions: Predicted labels
-        num_samples: Number of misclassified samples to plot
-        save: Whether to save the plot
-    """
-    # Find misclassified samples
+    """Plot misclassified samples"""
     misclassified_indices = np.where(y_test != predictions)[0]
     
     if len(misclassified_indices) == 0:
@@ -211,7 +166,6 @@ def plot_misclassified_samples(x_test, y_test, predictions, num_samples=16, save
                          fontsize=9, color='red', fontweight='bold')
         axes[i].axis('off')
     
-    # Hide unused subplots
     for i in range(num_samples, len(axes)):
         axes[i].axis('off')
     
@@ -228,13 +182,7 @@ def plot_misclassified_samples(x_test, y_test, predictions, num_samples=16, save
 
 
 def print_classification_report(y_true, y_pred):
-    """
-    Print detailed classification report
-    
-    Args:
-        y_true: True labels
-        y_pred: Predicted labels
-    """
+    """Print detailed classification report"""
     report = classification_report(y_true, y_pred, 
                                    target_names=config.CLASS_NAMES,
                                    digits=4)
@@ -247,13 +195,7 @@ def print_classification_report(y_true, y_pred):
 
 
 def plot_learning_rate_schedule(history, save=True):
-    """
-    Plot learning rate schedule if available
-    
-    Args:
-        history: Keras History object
-        save: Whether to save the plot
-    """
+    """Plot learning rate schedule if available"""
     if 'lr' not in history.history:
         print("Learning rate information not available in history.")
         return
@@ -277,50 +219,34 @@ def plot_learning_rate_schedule(history, save=True):
 
 
 def visualize_all_results(history, test_data, model, class_accuracy):
-    """
-    Generate all visualization plots
-    
-    Args:
-        history: Training history object
-        test_data: Tuple of (x_test, y_test)
-        model: Trained model
-        class_accuracy: Dictionary of class-wise accuracy
-    """
+    """Generate all visualization plots"""
     print("\n" + "="*70)
     print("GENERATING VISUALIZATIONS")
     print("="*70 + "\n")
     
     x_test, y_test = test_data
     
-    # Get predictions
     predictions_probs = model.predict(x_test, verbose=0)
     predictions = np.argmax(predictions_probs, axis=1)
     
-    # Plot training history
     print("Plotting training history...")
     plot_training_history(history)
     
-    # Plot sample predictions
     print("Plotting sample predictions...")
     plot_sample_images(x_test, y_test, num_samples=25, predictions=predictions)
     
-    # Plot confusion matrix
     print("Plotting confusion matrix...")
     plot_confusion_matrix(y_test, predictions)
     
-    # Plot class-wise accuracy
     print("Plotting class-wise accuracy...")
     plot_class_wise_accuracy(class_accuracy)
     
-    # Plot misclassified samples
     print("Plotting misclassified samples...")
     plot_misclassified_samples(x_test, y_test, predictions)
     
-    # Plot learning rate schedule
     print("Plotting learning rate schedule...")
     plot_learning_rate_schedule(history)
     
-    # Print classification report
     print_classification_report(y_test, predictions)
     
     print("="*70)

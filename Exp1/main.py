@@ -1,23 +1,13 @@
 """
 Main execution script for Fashion MNIST CNN Classification
-Experiment 2: Implement and evaluate a Convolutional Neural Network (CNN) 
-             model for image classification using Python and deep learning libraries
-
-Author: Raj Kalpesh Mathuria
-Div: PE-C
-UID: 2023300139
-
-Course: Deep Learning (CE312)
-Class: T.E. CE Sem-VI (2025-2026)
-Institute: Sardar Patel Institute of Technology, Mumbai
 """
 
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import sys
 import warnings
 warnings.filterwarnings('ignore')
 
-# Add parent directory to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import config
@@ -29,7 +19,6 @@ from src.plotting import visualize_all_results
 
 
 def print_header():
-    """Print experiment header"""
     print("\n" + "="*70)
     print("EXPERIMENT 2: CNN FOR IMAGE CLASSIFICATION")
     print("Fashion MNIST Dataset")
@@ -41,7 +30,6 @@ def print_header():
 
 
 def print_system_info():
-    """Print system and library information"""
     import tensorflow as tf
     
     print("="*70)
@@ -54,16 +42,9 @@ def print_system_info():
 
 
 def main():
-    """
-    Main execution function for CNN training pipeline
-    """
-    # Print header
     print_header()
-    
-    # Print system info
     print_system_info()
     
-    # Create output directories
     os.makedirs(config.MODEL_DIR, exist_ok=True)
     os.makedirs(config.OUTPUT_DIR, exist_ok=True)
     
@@ -71,21 +52,18 @@ def main():
     print("STEP 1: DATA PREPARATION")
     print("="*70)
     
-    # Prepare data
     (x_train, y_train), (x_val, y_val), (x_test, y_test), datagen = prepare_data()
     
     print("\n" + "="*70)
     print("STEP 2: MODEL BUILDING")
     print("="*70)
     
-    # Build and compile model
     model, callbacks = build_and_compile_model()
     
     print("\n" + "="*70)
     print("STEP 3: MODEL TRAINING")
     print("="*70)
     
-    # Train model
     history = train_model(
         model=model,
         train_data=(x_train, y_train),
@@ -98,28 +76,23 @@ def main():
     print("STEP 4: MODEL EVALUATION")
     print("="*70)
     
-    # Evaluate model
     test_metrics = evaluate_model(model, (x_test, y_test))
     
-    # Calculate class-wise accuracy
     class_accuracy = calculate_class_wise_accuracy(model, (x_test, y_test))
     
-    # Get training summary
     summary = get_training_summary(history, test_metrics)
     
     print("\n" + "="*70)
     print("STEP 5: VISUALIZATION")
     print("="*70)
     
-    # Generate all visualizations
     visualize_all_results(history, (x_test, y_test), model, class_accuracy)
     
     print("\n" + "="*70)
     print("STEP 6: SAVING MODEL")
     print("="*70)
     
-    # Save final model
-    save_model(model, 'final_model.h5')
+    save_model(model, 'final_model.keras')
     
     print("\n" + "="*70)
     print("EXPERIMENT COMPLETED SUCCESSFULLY!")

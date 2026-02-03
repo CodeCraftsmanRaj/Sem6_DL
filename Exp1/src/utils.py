@@ -1,7 +1,5 @@
 """
 Utility functions and helpers
-Author: Raj Kalpesh Mathuria
-UID: 2023300139
 """
 
 import os
@@ -11,15 +9,7 @@ from datetime import datetime
 
 
 def create_experiment_summary(history, test_metrics, class_accuracy, output_dir):
-    """
-    Create and save experiment summary as JSON
-    
-    Args:
-        history: Training history
-        test_metrics: Test evaluation metrics
-        class_accuracy: Class-wise accuracy dictionary
-        output_dir: Output directory path
-    """
+    """Create and save experiment summary as JSON"""
     summary = {
         'experiment': 'Experiment 2 - CNN Image Classification',
         'dataset': 'Fashion MNIST',
@@ -51,15 +41,7 @@ def create_experiment_summary(history, test_metrics, class_accuracy, output_dir)
 
 
 def format_time(seconds):
-    """
-    Format seconds into human-readable time
-    
-    Args:
-        seconds: Time in seconds
-    
-    Returns:
-        str: Formatted time string
-    """
+    """Format seconds into human-readable time"""
     hours = int(seconds // 3600)
     minutes = int((seconds % 3600) // 60)
     secs = int(seconds % 60)
@@ -73,12 +55,7 @@ def format_time(seconds):
 
 
 def ensure_dir(directory):
-    """
-    Create directory if it doesn't exist
-    
-    Args:
-        directory: Directory path
-    """
+    """Create directory if it doesn't exist"""
     if not os.path.exists(directory):
         os.makedirs(directory)
         print(f"Created directory: {directory}")
