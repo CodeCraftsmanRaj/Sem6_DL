@@ -1,0 +1,228 @@
+┌─────────────────────────────────────────────────────────────────┐
+│                    QUICK START GUIDE                            │
+│         Experiment 2: CNN for Image Classification              │
+│                   Fashion MNIST Dataset                         │
+└─────────────────────────────────────────────────────────────────┘
+
+👤 Author: Raj Kalpesh Mathuria
+🆔 UID: 2023300139
+🎓 Division: PE-C
+
+═══════════════════════════════════════════════════════════════════
+
+📋 PREREQUISITES
+═══════════════════════════════════════════════════════════════════
+
+✓ Python 3.8 or higher installed
+✓ pip package manager
+✓ 2GB free disk space
+✓ 8GB RAM minimum
+
+═══════════════════════════════════════════════════════════════════
+
+🚀 INSTALLATION STEPS
+═══════════════════════════════════════════════════════════════════
+
+1. Navigate to the experiment directory:
+   
+   cd /home/raj_99/Projects/Sem6_Labs/DL/Exp1
+
+2. Install required packages:
+   
+   pip install -r requirements.txt
+   
+   OR install individually:
+   
+   pip install tensorflow numpy matplotlib seaborn scikit-learn
+
+3. Verify installation:
+   
+   python test_imports.py
+
+═══════════════════════════════════════════════════════════════════
+
+▶️  RUNNING THE EXPERIMENT
+═══════════════════════════════════════════════════════════════════
+
+Basic Execution:
+
+   python main.py
+
+This will:
+• Load Fashion MNIST dataset
+• Build CNN model
+• Train for 20 epochs
+• Generate visualizations
+• Save results
+
+Expected Runtime: 10-30 minutes (depending on CPU/GPU)
+
+═══════════════════════════════════════════════════════════════════
+
+⚙️  CONFIGURATION
+═══════════════════════════════════════════════════════════════════
+
+To modify hyperparameters, edit config.py:
+
+• EPOCHS = 20              → Number of training epochs
+• BATCH_SIZE = 128         → Batch size
+• LEARNING_RATE = 0.001    → Learning rate
+• DROPOUT_RATE = 0.5       → Dropout rate
+• USE_AUGMENTATION = True  → Enable data augmentation
+
+═══════════════════════════════════════════════════════════════════
+
+📊 OUTPUT FILES
+═══════════════════════════════════════════════════════════════════
+
+After execution, check these directories:
+
+models/
+├── best_model.h5          → Best model during training
+└── final_model.h5         → Final trained model
+
+outputs/
+├── training_history.png        → Accuracy & loss curves
+├── confusion_matrix.png        → Confusion matrix
+├── class_wise_accuracy.png     → Per-class accuracy
+├── sample_predictions.png      → Sample predictions
+├── misclassified_samples.png   → Misclassified examples
+└── logs/                       → TensorBoard logs
+
+═══════════════════════════════════════════════════════════════════
+
+🔍 TESTING INDIVIDUAL MODULES
+═══════════════════════════════════════════════════════════════════
+
+Test data loading:
+   python -c "from src.data_loader import prepare_data; prepare_data()"
+
+Test model creation:
+   python -c "from src.model import build_and_compile_model; build_and_compile_model()"
+
+Test imports:
+   python test_imports.py
+
+═══════════════════════════════════════════════════════════════════
+
+📈 VIEWING TENSORBOARD
+═══════════════════════════════════════════════════════════════════
+
+After training, view detailed logs:
+
+   tensorboard --logdir outputs/logs
+
+Then open: http://localhost:6006
+
+═══════════════════════════════════════════════════════════════════
+
+🐛 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════
+
+Issue: Memory Error
+Solution: Reduce BATCH_SIZE in config.py (try 64 or 32)
+
+Issue: Slow Training
+Solution: 
+  - Reduce EPOCHS (try 10)
+  - Set USE_AUGMENTATION = False
+  - Ensure GPU is being used (if available)
+
+Issue: Import Errors
+Solution: Reinstall packages
+  pip install --upgrade tensorflow numpy matplotlib seaborn scikit-learn
+
+Issue: Module not found
+Solution: Ensure you're in the Exp1 directory when running
+
+═══════════════════════════════════════════════════════════════════
+
+📚 PROJECT STRUCTURE
+═══════════════════════════════════════════════════════════════════
+
+Exp1/
+├── main.py                  ← Run this file
+├── config.py                ← Configuration settings
+├── requirements.txt         ← Dependencies
+├── README.md                ← Detailed documentation
+├── EXPERIMENT_DOCUMENTATION.txt  ← Complete theory
+├── test_imports.py          ← Test script
+├── src/
+│   ├── data_loader.py      ← Data loading & preprocessing
+│   ├── model.py            ← CNN architecture
+│   ├── train.py            ← Training logic
+│   ├── plotting.py         ← Visualization functions
+│   └── utils.py            ← Utility functions
+├── data/                    ← Dataset (auto-downloaded)
+├── models/                  ← Saved models
+└── outputs/                 ← Generated plots
+
+═══════════════════════════════════════════════════════════════════
+
+✨ EXPECTED RESULTS
+═══════════════════════════════════════════════════════════════════
+
+Typical Performance:
+• Training Accuracy: 92-94%
+• Validation Accuracy: 90-92%
+• Test Accuracy: 89-91%
+• Training Time: 10-30 minutes
+
+Best Classes: Trouser, Bag, Ankle boot
+Challenging Classes: Shirt, T-shirt, Pullover (similar appearance)
+
+═══════════════════════════════════════════════════════════════════
+
+🎯 FASHION MNIST CLASSES
+═══════════════════════════════════════════════════════════════════
+
+0: T-shirt/top    5: Sandal
+1: Trouser        6: Shirt
+2: Pullover       7: Sneaker
+3: Dress          8: Bag
+4: Coat           9: Ankle boot
+
+═══════════════════════════════════════════════════════════════════
+
+💡 TIPS
+═══════════════════════════════════════════════════════════════════
+
+• First run will download Fashion MNIST (~30MB)
+• Use GPU if available for faster training
+• Monitor outputs/ folder for real-time visualizations
+• Check models/ folder for saved model files
+• Read README.md for detailed documentation
+• Review EXPERIMENT_DOCUMENTATION.txt for complete theory
+
+═══════════════════════════════════════════════════════════════════
+
+🔗 ADDITIONAL RESOURCES
+═══════════════════════════════════════════════════════════════════
+
+TensorFlow: https://www.tensorflow.org/
+Fashion MNIST: https://github.com/zalandoresearch/fashion-mnist
+Keras Documentation: https://keras.io/
+
+═══════════════════════════════════════════════════════════════════
+
+📝 NEXT STEPS
+═══════════════════════════════════════════════════════════════════
+
+1. ✓ Install dependencies
+2. ✓ Test imports
+3. ▶  Run main.py
+4. 📊 Analyze results
+5. 📝 Document findings
+6. 🎓 Answer post-lab questions
+
+═══════════════════════════════════════════════════════════════════
+
+Need help? Check:
+• README.md for detailed documentation
+• EXPERIMENT_DOCUMENTATION.txt for theory and answers
+• config.py for all configurable parameters
+
+═══════════════════════════════════════════════════════════════════
+Last Updated: February 3, 2026
+Status: Ready to Run ✓
+═══════════════════════════════════════════════════════════════════

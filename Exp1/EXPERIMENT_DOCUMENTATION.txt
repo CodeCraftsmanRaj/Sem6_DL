@@ -1,0 +1,603 @@
+"""
+=============================================================================
+        EXPERIMENT 2: CNN FOR IMAGE CLASSIFICATION
+        Fashion MNIST Dataset
+=============================================================================
+
+Bharatiya Vidya Bhavan's
+SARDAR PATEL INSTITUTE OF TECHNOLOGY
+Munshi Nagar, Andheri (W), Mumbai – 400 058
+(Autonomous Institute Affiliated to the University of Mumbai)
+
+Class: T.E. CE Sem-VI (2025-2026)
+Subject Code: CE312
+Subject Name: Deep Learning
+
+Name: Raj Kalpesh Mathuria
+Division: PE-C
+UID: 2023300139
+
+=============================================================================
+OBJECTIVE:
+=============================================================================
+To design, implement, and evaluate a Convolutional Neural Network (CNN)
+using Python for image classification using accuracy and visualization
+techniques.
+
+=============================================================================
+PREREQUISITES:
+=============================================================================
+• Basic knowledge of Python programming
+• Linear algebra, probability, and statistics
+• Fundamentals of neural networks and deep learning
+• Basic understanding of images and pixels
+
+=============================================================================
+SOFTWARE AND HARDWARE REQUIREMENTS:
+=============================================================================
+Software:
+• Python 3.8+
+• TensorFlow 2.10+
+• NumPy, Matplotlib, Seaborn
+• scikit-learn
+
+Hardware:
+• Minimum 8GB RAM
+• GPU recommended (optional, will use CPU otherwise)
+• 2GB free disk space
+
+=============================================================================
+PRE-LAB QUESTIONS AND ANSWERS:
+=============================================================================
+
+1. What is a Convolutional Neural Network (CNN) and how does it differ 
+   from a traditional neural network?
+
+Answer:
+A Convolutional Neural Network (CNN) is a specialized type of neural 
+network designed primarily for processing structured grid data like images. 
+The key differences from traditional neural networks are:
+
+Key Components of CNN:
+• Convolutional Layers: Apply filters/kernels to detect local patterns
+• Pooling Layers: Reduce spatial dimensions while retaining important features
+• Feature Maps: Output of convolutional operations showing detected patterns
+• Sparse Connectivity: Each neuron connects to only a local region
+
+Differences from Traditional Neural Networks:
+
+1. Architecture:
+   - CNN: Uses convolutional and pooling layers with local connections
+   - Traditional: Uses fully connected layers with global connections
+
+2. Parameter Sharing:
+   - CNN: Same filter weights applied across entire input (fewer parameters)
+   - Traditional: Unique weights for each connection (many parameters)
+
+3. Spatial Structure:
+   - CNN: Preserves spatial relationships between pixels
+   - Traditional: Flattens input, losing spatial information
+
+4. Translation Invariance:
+   - CNN: Can detect patterns regardless of position in image
+   - Traditional: Must relearn patterns at different positions
+
+5. Efficiency:
+   - CNN: Fewer parameters, faster training for images
+   - Traditional: Many parameters, impractical for image data
+
+Example:
+For a 224x224 RGB image (150,528 pixels):
+- Traditional NN first hidden layer (1000 neurons): 150M+ parameters
+- CNN first layer (32 filters, 3x3): Only 896 parameters
+
+
+-------------------------------------------------------------------------------
+
+2. Why are convolution and pooling layers important in CNNs?
+
+Answer:
+
+CONVOLUTION LAYERS:
+
+Importance:
+1. Feature Detection: Automatically learn to detect patterns (edges, textures)
+2. Parameter Efficiency: Share weights across spatial dimensions
+3. Local Connectivity: Focus on local patterns first
+4. Hierarchical Learning: Build complex features from simple ones
+
+Mathematical Operation:
+Output[i,j] = Σ Σ Input[i+m, j+n] × Filter[m,n] + bias
+            m n
+
+Benefits:
+• Early layers detect simple features (edges, colors)
+• Middle layers detect textures and patterns
+• Deep layers detect complex objects and scenes
+
+
+POOLING LAYERS:
+
+Importance:
+1. Dimensionality Reduction: Reduce spatial size, computational cost
+2. Translation Invariance: Small shifts in input don't affect output
+3. Feature Extraction: Retain dominant features, discard irrelevant details
+4. Overfitting Prevention: Reduce parameters and complexity
+
+Types:
+• Max Pooling: Takes maximum value (most common, preserves strong features)
+• Average Pooling: Takes average value (preserves overall information)
+
+Example (2x2 Max Pooling):
+Input:        Output:
+[1  3]  [2  4]     [3  4]
+[2  1]  [3  2]  →  [5  7]
+
+[5  2]  [1  7]
+[4  3]  [6  5]
+
+Benefits:
+• Reduces 28x28 → 14x14 → 7x7 (computational efficiency)
+• Makes network robust to small variations
+• Helps achieve spatial hierarchy
+
+
+-------------------------------------------------------------------------------
+
+3. What is the role of filters in convolution layers?
+
+Answer:
+
+Filters (also called kernels) are small matrices that slide over input data
+to detect specific patterns and features.
+
+Structure:
+• Small matrices (typically 3x3, 5x5, 7x7)
+• Contain learnable weights
+• Applied across entire input (parameter sharing)
+
+Role and Function:
+
+1. FEATURE DETECTION:
+   - Edge detection (vertical, horizontal, diagonal)
+   - Texture detection (patterns, gradients)
+   - Shape detection (curves, corners)
+   - Color detection (specific color patterns)
+
+2. PATTERN LEARNING:
+   - Weights learned through backpropagation
+   - Adapt to detect relevant features for the task
+   - Different filters learn different features
+
+3. FEATURE MAPS:
+   - Each filter produces a feature map
+   - Shows where the pattern appears in input
+   - Multiple filters → multiple feature maps
+
+Example Filters:
+
+Vertical Edge Detection:     Horizontal Edge Detection:
+[-1  0  1]                  [-1 -1 -1]
+[-1  0  1]                  [ 0  0  0]
+[-1  0  1]                  [ 1  1  1]
+
+Blur Filter:                Sharpen Filter:
+[1/9 1/9 1/9]              [ 0 -1  0]
+[1/9 1/9 1/9]              [-1  5 -1]
+[1/9 1/9 1/9]              [ 0 -1  0]
+
+Hierarchical Feature Learning:
+
+Layer 1 Filters (32 filters):
+→ Detect simple patterns (edges, colors, gradients)
+
+Layer 2 Filters (64 filters):
+→ Combine Layer 1 features to detect textures, simple shapes
+
+Layer 3 Filters (128 filters):
+→ Combine Layer 2 features to detect complex objects, parts
+
+Layer 4 (Dense):
+→ Combine all features for final classification
+
+Properties:
+• Number of filters = number of output channels
+• Filter size affects receptive field
+• Stride controls how filter moves
+• Padding controls output size
+
+
+-------------------------------------------------------------------------------
+
+4. What is overfitting and how does dropout help in reducing it?
+
+Answer:
+
+OVERFITTING:
+
+Definition:
+Overfitting occurs when a model learns training data too well, including
+noise and random fluctuations, resulting in poor generalization to new data.
+
+Symptoms:
+• High training accuracy, low test accuracy
+• Model memorizes rather than learns patterns
+• Poor performance on new, unseen data
+• Large gap between training and validation metrics
+
+Causes:
+1. Model too complex (too many parameters)
+2. Insufficient training data
+3. Training for too many epochs
+4. No regularization
+5. Noise in training data
+
+Example:
+Training Accuracy: 99%
+Test Accuracy: 70%  ← OVERFITTING
+
+
+DROPOUT:
+
+Mechanism:
+Dropout randomly "drops" (sets to zero) a fraction of neurons during
+training, forcing the network to learn robust features.
+
+How it Works:
+
+Training Phase:
+1. For each training sample, randomly select neurons
+2. Temporarily remove them (dropout rate, e.g., 0.5 = 50%)
+3. Forward pass with reduced network
+4. Backpropagation updates only active neurons
+5. Next sample uses different random subset
+
+Testing Phase:
+• All neurons active
+• Outputs scaled by (1 - dropout_rate)
+• Or scale during training (inverted dropout)
+
+Benefits:
+
+1. PREVENTS CO-ADAPTATION:
+   - Neurons can't rely on specific other neurons
+   - Forces learning of independent features
+   - Creates redundant representations
+
+2. ENSEMBLE EFFECT:
+   - Each iteration trains a different sub-network
+   - Final model is like averaging many models
+   - Improves generalization
+
+3. REGULARIZATION:
+   - Reduces effective model capacity during training
+   - Prevents overfitting without reducing model size
+   - Acts like L2 regularization
+
+4. ROBUST FEATURES:
+   - Features must be useful on their own
+   - Not dependent on presence of other features
+
+Example in Our CNN:
+• Dropout(0.25) after pooling layers → drop 25% of neurons
+• Dropout(0.5) before output layer → drop 50% of neurons
+
+Typical Dropout Rates:
+• Convolutional layers: 0.2 - 0.3
+• Dense layers: 0.5 - 0.6
+• Output layer: Never use dropout
+
+Other Overfitting Prevention Techniques:
+• Data augmentation
+• Early stopping
+• Batch normalization
+• L1/L2 regularization
+• Cross-validation
+
+
+-------------------------------------------------------------------------------
+
+5. What is Softmax activation and why is it used in classification?
+
+Answer:
+
+SOFTMAX ACTIVATION:
+
+Definition:
+Softmax is an activation function that converts a vector of raw scores
+(logits) into a probability distribution.
+
+Mathematical Formula:
+For output vector z = [z₁, z₂, ..., zₙ]:
+
+         exp(zᵢ)
+σ(z)ᵢ = ─────────
+        Σ exp(zⱼ)
+        j=1 to n
+
+Where:
+• zᵢ = raw output (logit) for class i
+• σ(z)ᵢ = probability for class i
+• Σ σ(z)ᵢ = 1 (probabilities sum to 1)
+  i
+
+Example:
+Raw outputs (logits): [2.0, 1.0, 0.1]
+
+Step 1 - Exponentiation:
+exp([2.0, 1.0, 0.1]) = [7.39, 2.72, 1.11]
+
+Step 2 - Normalization:
+Sum = 7.39 + 2.72 + 1.11 = 11.22
+
+Softmax outputs:
+[7.39/11.22, 2.72/11.22, 1.11/11.22] = [0.66, 0.24, 0.10]
+
+Interpretation: 66% Class 0, 24% Class 1, 10% Class 2
+
+
+WHY USE SOFTMAX IN CLASSIFICATION:
+
+1. PROBABILITY DISTRIBUTION:
+   • Outputs sum to 1.0
+   • Each output in range [0, 1]
+   • Interpretable as confidence/probability
+
+2. MULTI-CLASS CLASSIFICATION:
+   • Handles any number of classes
+   • Mutually exclusive classes
+   • Clear winner selection (argmax)
+
+3. MATHEMATICAL PROPERTIES:
+   • Differentiable (backpropagation works)
+   • Exponential amplifies differences
+   • Smooth, continuous function
+
+4. WORKS WITH CROSS-ENTROPY LOSS:
+   Loss = -Σ yᵢ log(ŷᵢ)
+   
+   Where:
+   • yᵢ = true label (one-hot encoded)
+   • ŷᵢ = predicted probability (softmax output)
+   
+   This combination has nice gradient properties
+
+5. CONFIDENCE SCORES:
+   • Not just classification, but confidence level
+   • Can set thresholds for uncertain predictions
+   • Useful for decision-making systems
+
+Fashion MNIST Example:
+Raw CNN outputs: [0.2, -0.5, 3.1, 0.8, -1.2, 0.1, -0.3, 2.4, 0.6, -0.8]
+                 ↓ Softmax ↓
+Probabilities:   [0.04, 0.02, 0.68, 0.07, 0.01, 0.03, 0.02, 0.34, 0.06, 0.01]
+                              ↑ Maximum
+Predicted Class: 2 (Pullover) with 68% confidence
+
+Comparison with Other Activations:
+• Sigmoid: For binary classification or multi-label
+• Softmax: For multi-class classification (one label)
+• Linear: For regression tasks
+
+
+-------------------------------------------------------------------------------
+
+6. What is data augmentation and how does it improve CNN performance?
+
+Answer:
+
+DATA AUGMENTATION:
+
+Definition:
+Data augmentation is a technique that artificially increases the size and
+diversity of training data by applying random transformations to existing
+data without collecting new samples.
+
+Common Augmentation Techniques:
+
+1. GEOMETRIC TRANSFORMATIONS:
+   • Rotation: Rotate images by random angles (±10°)
+   • Translation: Shift images horizontally/vertically
+   • Scaling: Zoom in/out
+   • Flipping: Horizontal/vertical flip
+   • Shearing: Slant transformation
+   • Cropping: Random crop sections
+
+2. COLOR TRANSFORMATIONS:
+   • Brightness adjustment
+   • Contrast changes
+   • Saturation modification
+   • Hue shifting
+   • Color jittering
+
+3. NOISE INJECTION:
+   • Gaussian noise
+   • Salt-and-pepper noise
+   • Random erasing
+
+4. ADVANCED TECHNIQUES:
+   • Cutout: Random masking of image regions
+   • MixUp: Blend two images
+   • CutMix: Replace regions from another image
+
+Example in Fashion MNIST:
+Original image → Apply:
+• Rotation: ±10 degrees
+• Width shift: ±10%
+• Height shift: ±10%
+• Horizontal flip: Yes
+
+Result: 1 image → effectively 100s of variations
+
+
+HOW IT IMPROVES CNN PERFORMANCE:
+
+1. INCREASES DATASET SIZE:
+   Problem: Limited training data
+   Solution: Generate more samples artificially
+   Benefit: More data = better learning
+
+2. REDUCES OVERFITTING:
+   • Model sees variations, not just memorization
+   • Learns robust features, not specific to training set
+   • Generalizes better to test data
+
+3. IMPROVES GENERALIZATION:
+   • Model learns invariance to transformations
+   • Handles real-world variations better
+   • More robust to different conditions
+
+4. ADDRESSES CLASS IMBALANCE:
+   • Augment minority classes more
+   • Balance dataset distribution
+   • Improve minority class performance
+
+5. MAKES MODEL ROBUST:
+   • Invariant to position (translation)
+   • Invariant to orientation (rotation)
+   • Invariant to lighting (brightness/contrast)
+   • Invariant to scale (zoom)
+
+6. COST-EFFECTIVE:
+   • No need to collect more data
+   • Automatic and fast
+   • Works during training (on-the-fly)
+
+Performance Improvements:
+
+Without Augmentation:
+• Training Accuracy: 95%
+• Test Accuracy: 85%
+• Gap: 10% (overfitting)
+
+With Augmentation:
+• Training Accuracy: 92%
+• Test Accuracy: 90%
+• Gap: 2% (better generalization)
+
+Implementation in Our CNN:
+```python
+datagen = ImageDataGenerator(
+    rotation_range=10,          # Rotate ±10°
+    width_shift_range=0.1,      # Shift ±10% horizontally
+    height_shift_range=0.1,     # Shift ±10% vertically
+    horizontal_flip=True,       # Random horizontal flip
+    fill_mode='nearest'         # Fill empty pixels
+)
+```
+
+Best Practices:
+• Use domain-appropriate augmentations
+• Don't over-augment (unrealistic transformations)
+• Balance augmentation strength
+• More augmentation when less data available
+• Test impact on validation set
+
+Caution:
+• Don't augment test data (evaluate on real data)
+• Some augmentations may not make sense (e.g., vertical flip for text)
+• Preserve label meaning (don't flip 6 to become 9)
+
+
+=============================================================================
+THEORY - ALGORITHM STEPS:
+=============================================================================
+
+Step 1: Import required Python libraries
+   - TensorFlow/Keras for deep learning
+   - NumPy for numerical operations
+   - Matplotlib/Seaborn for visualization
+   - scikit-learn for metrics
+
+Step 2: Load the image dataset
+   - Fashion MNIST dataset (70,000 images)
+   - 60,000 training images
+   - 10,000 test images
+   - 10 classes of fashion items
+
+Step 3: Split data into training and testing sets
+   - Training set: 48,000 images (80%)
+   - Validation set: 12,000 images (20%)
+   - Test set: 10,000 images (separate)
+
+Step 4: Preprocess and normalize image data
+   - Reshape to (28, 28, 1) for CNN input
+   - Normalize pixel values to [0, 1]
+   - Convert to float32 format
+
+Step 5: Define CNN model architecture
+   - Convolutional blocks with multiple layers
+   - Pooling layers for downsampling
+   - Dropout for regularization
+   - Dense layers for classification
+
+Step 6: Compile the model with optimizer and loss function
+   - Optimizer: Adam (learning_rate=0.001)
+   - Loss: Sparse Categorical Crossentropy
+   - Metrics: Accuracy
+
+Step 7: Train the CNN model using training data
+   - Batch size: 128
+   - Epochs: 20
+   - With data augmentation
+   - With callbacks (checkpoint, early stopping)
+
+Step 8: Validate the model during training
+   - Monitor validation accuracy and loss
+   - Track training progress
+   - Prevent overfitting
+
+Step 9: Evaluate the trained model on test data
+   - Calculate test accuracy
+   - Calculate test loss
+   - Generate predictions
+
+Step 10: Calculate accuracy and loss
+   - Overall accuracy
+   - Class-wise accuracy
+   - Confusion matrix
+   - Classification report
+
+Step 11: Visualize training and validation performance
+   - Training/validation curves
+   - Confusion matrix heatmap
+   - Sample predictions
+   - Misclassified samples
+   - Class-wise accuracy bar chart
+
+=============================================================================
+CONCLUSION:
+=============================================================================
+
+This experiment successfully demonstrates the implementation and evaluation
+of a Convolutional Neural Network for image classification. Key learnings:
+
+1. CNN Architecture:
+   - Hierarchical feature learning from simple to complex
+   - Effective use of convolution, pooling, and dense layers
+   - Proper regularization with dropout and batch normalization
+
+2. Training Process:
+   - Data preprocessing and normalization are crucial
+   - Data augmentation significantly improves generalization
+   - Callbacks enable better model optimization
+   - Monitoring both training and validation metrics prevents overfitting
+
+3. Model Performance:
+   - Achieved high accuracy on Fashion MNIST dataset
+   - Class-wise accuracy shows model strengths and weaknesses
+   - Confusion matrix reveals common misclassification patterns
+   - Visualization helps in understanding model behavior
+
+4. Best Practices:
+   - Modular code structure for maintainability
+   - Comprehensive evaluation with multiple metrics
+   - Detailed visualization for analysis
+   - Proper documentation and configuration management
+
+The CNN successfully classifies fashion items, demonstrating the power of
+deep learning for computer vision tasks. The structured approach ensures
+reproducibility and ease of experimentation with different hyperparameters.
+
+=============================================================================
+"""

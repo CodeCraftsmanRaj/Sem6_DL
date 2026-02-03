@@ -1,0 +1,63 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# TensorFlow/Keras
+*.h5
+*.pb
+checkpoint
+*.ckpt
+*.ckpt.meta
+*.ckpt.index
+*.ckpt.data*
+
+# Model files (except explicitly needed)
+models/*.h5
+models/*.keras
+models/*.pkl
+
+# Logs
+logs/
+*.log
+tensorboard/
+outputs/logs/
+
+# Data files
+data/*.npy
+data/*.npz
+data/*.csv
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output files
+outputs/*.png
+outputs/*.jpg
+outputs/*.jpeg
+outputs/*.pdf
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
