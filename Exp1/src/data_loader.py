@@ -7,7 +7,8 @@ UID: 2023300139
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+# Access ImageDataGenerator via keras to avoid Pylance errors
+ImageDataGenerator = keras.preprocessing.image.ImageDataGenerator
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

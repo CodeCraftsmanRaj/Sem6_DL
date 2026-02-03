@@ -31,9 +31,13 @@
    
    pip install -r requirements.txt
    
+   Note for GPU Users (Linux):
+   The requirements.txt uses 'tensorflow[and-cuda]' to automatically 
+   install necessary CUDA libraries. Ensure your NVIDIA drivers are up to date.
+
    OR install individually:
    
-   pip install tensorflow numpy matplotlib seaborn scikit-learn
+   pip install "tensorflow[and-cuda]" numpy matplotlib seaborn scikit-learn
 
 3. Verify installation:
    

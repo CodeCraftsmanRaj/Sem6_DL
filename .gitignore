@@ -1,1 +1,41 @@
 Exp1/data/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# TensorFlow/Keras
+Exp1/*.h5
+Exp1/*.pb
+Exp1/checkpoint
+Exp1/*.ckpt
+Exp1/*.ckpt.meta
+Exp1/*.ckpt.index
+Exp1/*.ckpt.data*
+
+
+# Model files (except explicitly needed)
+Exp1/models/*.h5
+Exp1/models/*.keras
+Exp1/models/*.pkl
+
+# Logs
+Exp1/logs/
+*.log
+tensorboard/
+Exp1/outputs/logs/
+
+# Data files
+Exp1/data/*.npy
+Exp1/data/*.npz
+Exp1/data/*.csv
+Exp1/data/*.pkl

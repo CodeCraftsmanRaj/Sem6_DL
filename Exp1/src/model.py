@@ -6,7 +6,9 @@ UID: 2023300139
 
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers, models
+# Access layers and models from keras directly to avoid Pylance errors
+layers = keras.layers
+models = keras.models
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
