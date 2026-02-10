@@ -41,3 +41,4 @@ Exp2/data/*.csv
 Exp2/data/*.pkl
 
 Exp3/data/*
+Exp3/models/*.keras
