@@ -15,4 +15,6 @@ def plot_history(history):
     plt.title('Loss')
     plt.legend()
 
+    plt.tight_layout()
+    plt.savefig("training_metrics.png")  # ✅ SAVED
     plt.show()

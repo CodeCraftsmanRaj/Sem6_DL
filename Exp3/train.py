@@ -3,6 +3,13 @@ from config.config import *
 from models.mobilenet_model import build_model
 from utils.plot_metrics import plot_history
 
+data_augmentation = tf.keras.Sequential([
+    tf.keras.layers.RandomFlip("horizontal"),
+    tf.keras.layers.RandomRotation(0.1),
+    tf.keras.layers.RandomZoom(0.1),
+])
+
+
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     "data/train",
     image_size=IMG_SIZE,
@@ -30,4 +37,4 @@ history = model.fit(
 )
 
 plot_history(history)
-model.save("models/transfer_model.h5")
+model.save("models/transfer_model.keras")
