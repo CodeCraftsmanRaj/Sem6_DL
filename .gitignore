@@ -1,4 +1,4 @@
-Exp1/data/
+Exp2/data/
 
 # Virtual environments
 venv/
@@ -14,28 +14,30 @@ __pycache__/
 .Python
 
 # TensorFlow/Keras
-Exp1/*.h5
-Exp1/*.pb
-Exp1/checkpoint
-Exp1/*.ckpt
-Exp1/*.ckpt.meta
-Exp1/*.ckpt.index
-Exp1/*.ckpt.data*
+Exp2/*.h5
+Exp2/*.pb
+Exp2/checkpoint
+Exp2/*.ckpt
+Exp2/*.ckpt.meta
+Exp2/*.ckpt.index
+Exp2/*.ckpt.data*
 
 
 # Model files (except explicitly needed)
-Exp1/models/*.h5
-Exp1/models/*.keras
-Exp1/models/*.pkl
+Exp2/models/*.h5
+Exp2/models/*.keras
+Exp2/models/*.pkl
 
 # Logs
-Exp1/logs/
+Exp2/logs/
 *.log
 tensorboard/
-Exp1/outputs/logs/
+Exp2/outputs/logs/
 
 # Data files
-Exp1/data/*.npy
-Exp1/data/*.npz
-Exp1/data/*.csv
-Exp1/data/*.pkl
+Exp2/data/*.npy
+Exp2/data/*.npz
+Exp2/data/*.csv
+Exp2/data/*.pkl
+
+Exp3/data/*
