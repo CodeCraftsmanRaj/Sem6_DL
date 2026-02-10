@@ -10,11 +10,19 @@ def build_model(num_classes):
         input_shape=(224, 224, 3)
     )
 
-    base_model.trainable = False  # Freeze layers
+        # Freeze most layers
+    for layer in base_model.layers[:-30]:
+        layer.trainable = False
+
+    # Unfreeze last 30 layers
+    for layer in base_model.layers[-30:]:
+        layer.trainable = True
+
 
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
-    x = Dense(128, activation='relu')(x)
+    x = Dense(256, activation='relu')(x)
+    x = tf.keras.layers.Dropout(0.5)(x)
     outputs = Dense(num_classes, activation='softmax')(x)
 
     model = Model(inputs=base_model.input, outputs=outputs)
