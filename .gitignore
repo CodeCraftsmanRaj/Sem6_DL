@@ -42,3 +42,5 @@ Exp2/data/*.pkl
 
 Exp3/data/*
 Exp3/models/*.keras
+
+Exp6/outputs/models
