@@ -44,3 +44,20 @@ Exp3/data/*
 Exp3/models/*.keras
 
 Exp6/outputs/models
+
+# Experiment 8: ignore raw data and heavy intermediates, keep final plots/results
+Exp8/data/
+Exp8/__pycache__/
+Exp8/experiment_outputs/*.npy
+Exp8/experiment_outputs/*.keras
+Exp8/experiment_outputs/loaded_dataset.csv
+Exp8/experiment_outputs/normalized_dataset.csv
+Exp8/experiment_outputs/train_predictions.csv
+Exp8/experiment_outputs/test_predictions.csv
+Exp8/experiment_outputs/training_log.csv
+
+# Experiment 9: ignore raw/intermediate artifacts, keep generated image outputs and summaries
+Exp9/__pycache__/
+Exp9/experiment_outputs/*.keras
+Exp9/experiment_outputs/dataset_info.csv
+Exp9/experiment_outputs/training_history.csv

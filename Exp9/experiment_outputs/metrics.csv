@@ -1,0 +1,9 @@
+Metric,Value
+Final Discriminator Loss,0.6909450888633728
+Final Generator Loss,0.7442183494567871
+Best Discriminator Loss,0.6909450888633728
+Best Generator Loss,0.5740022659301758
+Epochs Trained,10.0
+Latent Dimension,100.0
+Batch Size,256.0
+Training Samples,10000.0
