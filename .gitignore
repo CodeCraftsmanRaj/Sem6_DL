@@ -61,3 +61,5 @@ Exp9/__pycache__/
 Exp9/experiment_outputs/*.keras
 Exp9/experiment_outputs/dataset_info.csv
 Exp9/experiment_outputs/training_history.csv
+
+.venv/
